@@ -12,8 +12,10 @@ website_dict = {
     'sogou': 'http://weixin.sogou.com/',
 
 }
-post_url = 'http://119.29.28.134:8000/itemStore/'
-destroy_url = 'http://119.29.28.134:8000/destroy-item/'
+# post_url = 'http://119.29.28.134:8000/itemStore/'
+# destroy_url = 'http://119.29.28.134:8000/destroy-item/'
+post_url = 'http://sfgx.fashcollege.com/itemStore/'
+destroy_url = 'http://sfgx.fashcollege.com/destroy-item/'
 
 
 class SogouSpider(object):
@@ -47,7 +49,7 @@ class SogouSpider(object):
             'Connection': 'close',
             'Content-Type': 'text/html; charset=UTF-8',
             'X-Powered-By': 'PHP/7.0.11',
-            'Host': '119.29.28.134:8000',
+            # 'Host': '119.29.28.134:8000',
         }
         self.session.headers.update(self.headers)
         if self.use_proxy:
@@ -59,7 +61,8 @@ class SogouSpider(object):
         # 最多重试3次
         for i in range(3):
             try:
-                p = requests.post(url=post_url, data=data_to_post, timeout=1)
+                p = requests.post(url=post_url, data=data_to_post, timeout=10)
+                print(p.text)
                 if p.status_code == 200:
                     break
             except requests.HTTPError or requests.Timeout:
@@ -69,7 +72,7 @@ class SogouSpider(object):
         session = self.session
         for i in range(3):
             try:
-                rec = session.get(url=self.search_url.format(keyword=keyword), timeout=1)
+                rec = session.get(url=self.search_url.format(keyword=keyword), timeout=10)
                 rec.encoding = 'utf-8'
                 break
             except requests.Timeout:
@@ -170,5 +173,5 @@ if __name__ == '__main__':
     for key_word in sys.argv[1:]:
         print(key_word)
         search.first_page(keyword=key_word)
-        search.get_more(keyword=key_word)
-        time.sleep(10)
+        # search.get_more(keyword=key_word)
+        time.sleep(3)
