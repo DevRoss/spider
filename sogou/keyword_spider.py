@@ -4,7 +4,7 @@ import requests
 import time
 import json
 import pandas
-from urllib.parse import quote
+from threading import Thread
 import re
 import sys
 
@@ -121,11 +121,11 @@ class SogouSpider(object):
     def get_more(self, keyword):
         session = self.session
         for page in range(2, 11):
-            time.sleep(1)
-            next_page_url = self.next_page_url.format(page_num=page, keyword=quote(keyword))
+            # time.sleep(1)
+            next_page_url = self.next_page_url.format(page_num=page, keyword=keyword)
             for i in range(3):
                 try:
-                    res = session.get(url=next_page_url, timeout=1)
+                    res = session.get(url=next_page_url, timeout=10)
                     res.encoding = 'utf-8'
                     break
                 except requests.Timeout:
@@ -149,29 +149,36 @@ class SogouSpider(object):
                 if self.do_post:
                     self.lets_post(post_url=post_url, data_to_post=news_detail)
                 if self.debug:
+                    for key, value in news_detail.items():
+                        print(key)
+                        print(value)
                     news_collection.append(news_detail)
 
                 '''debug 模式'''
-            if self.debug:
-                df = pandas.DataFrame(news_collection)
-                self.data_frame = pandas.concat([self.data_frame, df], ignore_index=True)
-                # print(self.data_frame)
-                self.save_to_excel()
+        if self.debug:
+            df = pandas.DataFrame(news_collection)
+            self.data_frame = pandas.concat([self.data_frame, df], ignore_index=True)
+            # print(self.data_frame)
+            self.save_to_excel()
 
     def save_to_excel(self):
         self.data_frame.to_excel('ok.xlsx')
 
+    def run(self):
+        for key_word in sys.argv[1:]:
+            print(key_word)
+            search.first_page(keyword=key_word)
+            search.get_more(keyword=key_word)
+            time.sleep(1)
 
-if __name__ == '__main__':
-    requests.get(url=destroy_url)
-    # search = SogouSpider(website='sogou', debug=False, do_post=True)
-    # search = SogouSpider(website='sogou', debug=True,do_post=False)
-    # search.first_page(keyword='大学生')
-    # search.get_more(keyword='大学生')
 
-    search = SogouSpider(website='sogou', debug=False, do_post=True)
-    for key_word in sys.argv[1:]:
-        print(key_word)
-        search.first_page(keyword=key_word)
-        # search.get_more(keyword=key_word)
-        time.sleep(3)
+search = SogouSpider(website='sogou', debug=True, do_post=False, use_proxy=True)
+words = ['大学生', '测试']
+for key_word in words:
+    # for key_word in sys.argv[1:]:
+    task = Thread(target=search.get_more, args=(key_word,))
+    search.first_page(keyword=key_word)
+    # search.get_more(keyword=key_word)
+    task.start()
+    task.join()
+    time.sleep(1)

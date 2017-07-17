@@ -40,8 +40,8 @@ class Article:
             'X-Requested-With': 'com.tencent.mm',
             'Accept-Encoding': 'gzip, deflate',
             'User-Agent': 'Mozilla/5.0 (Linux; Android 7.1.1; Nexus 5 Build/NOF27B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 Mobile Safari/537.36 MicroMessenger/6.5.7.1041 NetType/WIFI Language/zh_CN',
-            'x-wechat-key': '926cd28a4aba000edb9f388d9df05262445a1683abb94e0b9f8589716d739d8ecb2aa758ee89e8268e2583fb6f8ec6e0c56e4620fc0e200adcf07c41e1f1fcfb5354e3b291a55a06cc0b09f4a335fe29',
-            'x-wechat-uin': 'MjIxMDM2OTM2MQ%3D%3D'
+            # 'x-wechat-key': '926cd28a4aba000edb9f388d9df05262445a1683abb94e0b9f8589716d739d8ecb2aa758ee89e8268e2583fb6f8ec6e0c56e4620fc0e200adcf07c41e1f1fcfb5354e3b291a55a06cc0b09f4a335fe29',
+            # 'x-wechat-uin': 'MjIxMDM2OTM2MQ%3D%3D'
         }
         self.raw_url = 'https://mp.weixin.qq.com/mp/getmasssendmsg?__biz={biz}==&from=1&uin={uin}&key={key}'
         self.raw_history_url = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz={biz}==&scene={scene}=android-25&version=26050741&lang=zh_CN&nettype=WIFI&a8scene=3&pass_ticket={pass_ticket}&wx_header=1'
@@ -55,23 +55,24 @@ class Article:
                                                pass_ticket=self.pass_ticket)
         print(self.url)
         res = self.session.get(url=self.url)
-        res.encoding = 'utf-8'
+        # res.encoding = 'utf-8'
         error = re.compile('<title>验证</title>')
         print(res.text)
         if re.search(error, res.text) is not None:
             print('url失效')
-        # history = re.findall('<div class="msg_list js_msg_list">.+', res.text, re.S)
-        msg_list = re.search(r'msgList = (?P<json>{(.*?)});', res.text)
-        article_dict = json.loads(msg_list.group('json'))
-        article_collection = []
-        for article in article_dict['list']:
-            article_detail = {}
-            article_detail['content_url'] = article['app_msg_ext_info']['content_url']
-            article_detail['img'] = article['app_msg_ext_info']['cover']
-            article_detail['title'] = article['app_msg_ext_info']['title']
-            for key, value in article_detail.items():
-                print(key)
-                print(value)
+        msg_list = re.search(r"msgList = '(?P<json>.+)';", res.text)
+        print('------------------------------------------------------\n\n\n\n\n')
+        print(msg_list.group('json'))
+        # article_dict = json.loads(msg_list.group('json'))
+        # article_collection = []
+        # for article in article_dict['list']:
+        #     article_detail = {}
+        #     article_detail['content_url'] = article['app_msg_ext_info']['content_url']
+        #     article_detail['img'] = article['app_msg_ext_info']['cover']
+        #     article_detail['title'] = article['app_msg_ext_info']['title']
+        #     for key, value in article_detail.items():
+        #         print(key)
+        #         print(value)
 
 
 if __name__ == '__main__':

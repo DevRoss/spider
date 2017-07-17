@@ -3,7 +3,6 @@ import requests
 from bs4 import BeautifulSoup
 
 
-
 def login():
     login_url = 'http://172.26.14.60:8000/uoj/j_security_check'
     main_page = 'http://172.26.14.60:8000/uoj/mainMenu.html?host='
