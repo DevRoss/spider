@@ -13,6 +13,7 @@ class Browser:
         # self.driver = webdriver.PhantomJS(desired_capabilities=dcap)
         # self.driver = webdriver.PhantomJS()
         self.driver = webdriver.Chrome()
+        self.driver.set_window_size(1920, 1080)
 
     def get_page(self, url):
         self.driver.get(url)
@@ -34,32 +35,36 @@ class Browser:
             "Total: ({0}, {1}), Viewport: ({2},{3})".format(total_width, total_height, viewport_width, viewport_height))
 
         # 得到每个图片的左上角的坐标
-        rectangles = []
+        self.driver.save_screenshot('0.png')
+        shot = Image.open('0.png')
+        width, height = shot.size
+        del shot
+        heights = []
         y = 0
         while y < total_height:
-            rectangles.append((0, y))
-            y += viewport_height
+            heights.append(y)
+            y += height
             # 最后一张不完整的图片， 调整坐标
             if y > total_height:
-                y = total_height - viewport_height
+                y = total_height - height
 
         # 合并图片
-        full_image = Image.new('RGB', (total_width, total_height))
-        for rectangle in rectangles:
-            print(rectangle[0], rectangle[1])
+        full_image = Image.new('RGB', (width, total_height))
+        for h in heights:
             self.driver.execute_script(
-                "window.scrollTo({width}, {height})".format(width=rectangle[0], height=rectangle[1]))
+                "window.scrollBy({width}, {height})".format(width=0, height=h))
             time.sleep(0.2)
-            tmp_img = str(rectangle[0])+'.png'
+            tmp_img = str(h) + '.png'
             self.driver.get_screenshot_as_file(tmp_img)
             shot = Image.open(tmp_img)
-            print(rectangle)
-            print(type(rectangle))
-            full_image.paste(shot, rectangle)
+            print(h)
+
+            full_image.paste(shot, (0, h))
             del shot
             os.remove(tmp_img)
         full_image.save('full_shot.png')
         print(self.driver.execute_script("return document.body.parentNode.scrollHeight"))
+
     def close(self):
         self.driver.quit()
 
@@ -67,6 +72,5 @@ class Browser:
 browser = Browser()
 # browser.get_page('https://zhuanlan.zhihu.com/p/27914299')
 browser.get_page('http://www.bilibili.com/')
-
 browser.fullapge_shot()
 browser.close()
