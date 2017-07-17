@@ -7,11 +7,11 @@ from PIL import Image
 
 class Browser:
     def __init__(self):
-        self.driver = webdriver.Chrome()
+        # self.driver = webdriver.Chrome()
         # dcap = dict(DesiredCapabilities.PHANTOMJS)
         # dcap['phantomjs.page.settings.userAgent'] ='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'
         # self.driver = webdriver.PhantomJS(desired_capabilities=dcap)
-        self.driver = webdriver.PhantomJS()
+        # self.driver = webdriver.PhantomJS()
         self.driver = webdriver.Chrome()
 
     def get_page(self, url):
@@ -59,7 +59,7 @@ class Browser:
             del shot
             os.remove(tmp_img)
         full_image.save('full_shot.png')
-
+        print(self.driver.execute_script("return document.body.parentNode.scrollHeight"))
     def close(self):
         self.driver.quit()
 
