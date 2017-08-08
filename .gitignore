@@ -51,3 +51,7 @@ Temporary Items
 /header.txt
 sogou/ok.xlsx
 /raw_headers.txt
+将删除 movies/movies/__pycache__/
+将删除 movies/movies/spiders/__pycache__/
+将删除 movies/movies/tool/
+将删除 page_snapshot/__pycache__/

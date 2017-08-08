@@ -6,6 +6,12 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import random
+import os
+import logging
+
+file_path = os.path.dirname(os.path.realpath(__file__))
+ip_file_path = os.path.join(file_path, 'tool', 'ipool.txt')
 
 
 class MoviesSpiderMiddleware(object):
@@ -54,3 +60,16 @@ class MoviesSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class RandomProxyMiddleware(object):
+    def process_request(self, request, spider):
+        proxy_list = list()
+        with open(ip_file_path, 'r') as f:
+            for ip in f:
+                proxy_list.append(ip.strip())
+        # if not request.meta['proxies']:
+        ip = 'http://' + random.choice(proxy_list)
+        logging.info('using proxy %s' % ip)
+        # print('ip is', ip)
+        request.meta['proxy'] = ip
