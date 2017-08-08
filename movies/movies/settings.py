@@ -56,11 +56,11 @@ RANDOMIZE_DOWNLOAD_DELAY = True
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-   # 'movies.middlewares.MyCustomDownloaderMiddleware': 543,
-   #  'movies.middlewares.RandomProxyMiddleware': 100,
-   #  'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110
-}
+# DOWNLOADER_MIDDLEWARES = {
+#    'movies.middlewares.MyCustomDownloaderMiddleware': 543,
+#     'movies.middlewares.RandomProxyMiddleware': 100,
+#     'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110
+# }
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html

@@ -19,7 +19,25 @@ class MoviesSpider(scrapy.Spider):
         # self.job.start()
         # self.job.join()
         urls = [
-            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E6%9C%80%E6%96%B0&page_limit=500',
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E6%9C%80%E6%96%B0&page_limit=500',  # 最新
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%83%AD%E9%97%A8&page_limit=500',  # 热门
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%BB%8F%E5%85%B8&page_limit=500',  # 经典
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E5%8F%AF%E6%92%AD%E6%94%BE&page_limit=500', # 可播放
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E8%B1%86%E7%93%A3%E9%AB%98%E5%88%86&page_limit=500',  # 高分
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E5%86%B7%E9%97%A8%E4%BD%B3%E7%89%87&page_limit=500',  # 冷门
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E5%8D%8E%E8%AF%AD&page_limit=500',  # 华语
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E6%AC%A7%E7%BE%8E&page_limit=500',  # 欧美
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E9%9F%A9%E5%9B%BD&page_limit=500',  # 韩国
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E6%97%A5%E6%9C%AC&page_limit=500',  # 日本
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E5%8A%A8%E4%BD%9C&page_limit=500',  # 动作
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E5%96%9C%E5%89%A7&page_limit=500',  # 喜剧
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%88%B1%E6%83%85&page_limit=500',  # 爱情
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E7%A7%91%E5%B9%BB&page_limit=500',  # 科幻
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E6%82%AC%E7%96%91&page_limit=500',  # 悬疑
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E6%81%90%E6%80%96&page_limit=500',  # 恐怖
+            'https://movie.douban.com/j/search_subjects?type=movie&tag=%E6%B2%BB%E6%84%88&page_limit=500',  # 治愈
+
+            # 单个测试
             # 'https://movie.douban.com/subject/1305487/'
             # 'https://movie.douban.com/subject/1826201/',  # 无编剧
             # 'https://movie.douban.com/subject/1470591/',  # 无主演
