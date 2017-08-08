@@ -2,7 +2,7 @@
 import scrapy
 import json
 import re
-from movies.items import MoviesItem, MoviesNetItem, MoviesCategoriesItem, MoviesStarringItem, MoviesDirectorItem
+from movies.items import MoviesItem, MoviesNetItem, MoviesCategoriesItem, MoviesStarringItem
 import threading
 from movies.tool.get_ip_pools import run_get_proxy
 import time
@@ -97,9 +97,10 @@ class MoviesSpider(scrapy.Spider):
             yield cate
 
         # 演员
-        for starring in starrings:
-            star = MoviesStarringItem()
-            star['starring_and_movies'] = (starring, name)
+        if starrings:
+            for starring in starrings:
+                star = MoviesStarringItem()
+                star['starring_and_movies'] = (starring, name)
 
         # 推荐
         recommended = response.css('#recommendations > div > dl > dd > a::attr(href)').extract()
